@@ -17,32 +17,46 @@ A dynamic, secure, and automated attendance system where students scan revolving
 ## 🚀 Getting Started
 
 ### 1. Prerequisites
-- Java 17+
-- Maven
-- PostgreSQL database named `qr_attendance`
+- **Java 17+**: Ensure Java is installed and `JAVA_HOME` is set.
+- **Maven 3.8+**: Required to build and run the backend.
+- **PostgreSQL**: A running instance with a database named `qr_attendance`.
 
 ### 2. Backend Setup
-1. Open `backend/src/main/resources/application.properties` and update your database credentials.
-2. Run the application:
+1. Configure database credentials in `backend/src/main/resources/application.properties`.
+2. Build and run the backend:
    ```bash
    cd backend
+   mvn clean install
    mvn spring-boot:run
    ```
-3. The system will automatically seed the database with test data (Dr. Alan Turing, Grace Hopper, etc.) from `data.sql`.
+   *The server will start on `http://localhost:8080` and seed the database automatically.*
 
-### 3. Frontend / Dashboard
-1. Simply open `frontend/pages/dashboard.html` in your browser.
-2. Select a course (e.g., Intro to Algorithms) and click **"Start Session"**.
-3. You will see a QR code appear which rotates every 10 seconds.
+### 3. Frontend / Dashboard Setup
+The frontend is a static web application that communicates with the backend API.
+1. Open `frontend/pages/dashboard.html` in a modern web browser.
+2. Ensure the backend is running for real-time data flow.
+3. Access the dashboard to manage courses, start sessions, and view live attendance.
 
-### 4. Student Scanning (Simulation)
+### 4. Student Scanner Setup
 1. Open `mobile-scanner/scan.html`.
-2. Enter a student roll number (e.g., `S001`).
-3. Point your camera at the teacher's dashboard QR.
-4. On a successful scan, you'll see a success modal, and the teacher's dashboard log will update.
+2. This mimics a mobile device interface. Enter a valid student ID (e.g., `S001`).
+3. Scan the revolving QR code from the teacher's dashboard to mark attendance.
 
 ## 📂 Project Structure
-(See your initial provided structure in root)
+
+```text
+qr-attendance-system/
+├── backend/                # Spring Boot application
+│   ├── src/                # Java source code and resources
+│   └── pom.xml             # Maven dependencies
+├── frontend/               # Teacher/Admin Dashboard (HTML/CSS/JS)
+│   ├── assets/             # CSS, Icons, and Libraries
+│   └── pages/              # Main dashboard pages
+├── mobile-scanner/         # Student scanning interface
+│   └── scan.html           # Core scanning page
+├── database/               # SQL scripts and data models
+└── docs/                   # Documentation and diagrams
+```
 
 ---
-Built with ❤️ by Antigravity AI
+
