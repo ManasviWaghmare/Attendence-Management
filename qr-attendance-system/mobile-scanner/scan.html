@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan QR | QR Attendance</title>
+    <link rel="stylesheet" href="../frontend/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 5rem;">
+    
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <div class="logo" style="margin-bottom: 0.5rem;">QR-ATTEND</div>
+        <p style="color: var(--text-muted);">Scan the QR Code on the Teacher's screen.</p>
+    </div>
+
+    <div id="reader" style="width: 320px; border-radius: 20px; overflow: hidden; border: 1px solid var(--primary);"></div>
+    
+    <div class="panel" style="width: 320px; margin-top: 2rem; text-align: center;">
+        <input type="text" id="studentRoll" placeholder="Enter Roll Number (S001)" style="width: 100%; padding: 12px; border-radius: 12px; margin-bottom: 1rem; border: none; background: var(--bg-dark); color: white;">
+        <p id="scan-status" style="font-size: 0.85rem; color: var(--text-muted);"></p>
+    </div>
+
+    <div id="success-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 100; align-items: center; justify-content: center; flex-direction: column;">
+        <i class="fa-solid fa-circle-check" style="color: var(--success); font-size: 4rem; margin-bottom: 1rem;"></i>
+        <h2>Attendance Marked!</h2>
+        <p style="color: var(--text-muted); margin-top: 0.5rem;">You can now close this window.</p>
+        <button onclick="location.reload()" class="btn-generate" style="margin-top: 2rem;">Scan Again</button>
+    </div>
+
+    <script src="../frontend/js/api.js"></script>
+    <script>
+        const studentRollInput = document.getElementById('studentRoll');
+        const statusText = document.getElementById('scan-status');
+        const successModal = document.getElementById('success-modal');
+
+        const onScanSuccess = async (decodedText, decodedResult) => {
+            const rollNumber = studentRollInput.value;
+            if (!rollNumber) {
+                statusText.innerText = "Please enter your Roll Number first!";
+                statusText.style.color = "var(--danger)";
+                return;
+            }
+
+            statusText.innerText = "Verifying QR code...";
+            statusText.style.color = "var(--primary)";
+
+            const response = await markAttendance({
+                qrCode: decodedText,
+                rollNumber: rollNumber,
+                ipAddress: "127.0.0.1",
+                location: "Main Lab",
+                deviceId: "S_DEVICE_101"
+            });
+
+            if (response.message) {
+                successModal.style.display = 'flex';
+                html5QrcodeScanner.clear();
+            } else {
+                statusText.innerText = "Error: " + (response.error || "Invalid QR Code");
+                statusText.style.color = "var(--danger)";
+            }
+        };
+
+        const html5QrcodeScanner = new Html5QrcodeScanner(
+            "reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess);
+    </script>
+</body>
+</html>

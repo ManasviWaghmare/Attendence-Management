@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | QR Attendance System</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fa-solid fa-qrcode"></i> QR-ATTEND
+        </div>
+        <ul class="nav-links">
+            <li class="nav-item active"><i class="fa-solid fa-house"></i> Dashboard</li>
+            <li class="nav-item"><i class="fa-solid fa-graduation-cap"></i> Students</li>
+            <li class="nav-item"><i class="fa-solid fa-book"></i> Courses</li>
+            <li class="nav-item"><i class="fa-solid fa-calendar-check"></i> Attendance</li>
+            <li class="nav-item"><i class="fa-solid fa-gear"></i> Settings</li>
+        </ul>
+        <div class="nav-item logout" style="color: var(--danger); margin-top: auto;">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </div>
+    </aside>
+
+    <main class="main">
+        <header>
+            <div class="header-title">
+                <h1>Welcome back, Teacher!</h1>
+                <p style="color: var(--text-muted);">Here's what's happening today.</p>
+            </div>
+            <div class="profile">
+                <span>Teacher Name</span>
+                <img src="https://ui-avatars.com/api/?name=Teacher&background=6366f1&color=fff" alt="Profile">
+            </div>
+        </header>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Students</div>
+                <div class="stat-value" id="stat-total-students">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Present Today</div>
+                <div class="stat-value" id="stat-total-present">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Active Sessions</div>
+                <div class="stat-value" id="stat-active-sessions">0</div>
+            </div>
+        </section>
+
+        <section class="dashboard-grid">
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">Attendance Insights</div>
+                    <select style="background: var(--bg-dark); color: white; border: 1px solid rgba(255,255,255,0.1); padding: 5px 10px; border-radius: 8px;">
+                        <option>This Week</option>
+                        <option>This Month</option>
+                    </select>
+                </div>
+                <canvas id="attendanceChart" height="250"></canvas>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">Live QR Control</div>
+                </div>
+                <div class="qr-container">
+                    <select id="course-selector" style="width: 100%; padding: 10px; margin-bottom: 2rem; border-radius: 12px; border: none; background: #334155; color: white;">
+                        <option value="">Select a Course to Start Session</option>
+                        <option value="1">Intro to Algorithms</option>
+                        <option value="2">Advanced Java</option>
+                    </select>
+                    
+                    <div id="qr-display" style="display: none;">
+                        <img id="qr-image" src="" alt="Dynamic QR Code">
+                        <p style="text-align: center; margin-top: 1rem; color: var(--success); font-size: 0.85rem;">
+                            <i class="fas fa-sync-alt fa-spin"></i> Rotating every 30s
+                        </p>
+                    </div>
+
+                    <div id="qr-placeholder" style="text-align: center; color: var(--text-muted); border: 2px dashed rgba(255,255,255,0.1); width: 250px; height: 250px; display: flex; align-items: center; justify-content: center; border-radius: 12px;">
+                        No Active Session
+                    </div>
+
+                    <button class="btn-generate" id="btn-start-session" style="width: 100%; margin-top: 2rem;">Start Session</button>
+                    <button class="btn-generate" id="btn-stop-session" style="width: 100%; margin-top: 1rem; background: var(--danger); display: none;">Stop Session</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel" style="margin-top: 1.5rem;">
+            <div class="panel-header">
+                <div class="panel-title">Recent Attendance Log</div>
+                <a href="#" style="color: var(--primary); text-decoration: none; font-size: 0.9rem;">View All</a>
+            </div>
+            <table class="attendance-table">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Roll Number</th>
+                        <th>Device ID</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="attendance-log">
+                    <!-- Data will be injected here -->
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: var(--text-muted);">No records yet for this session.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/charts.js"></script>
+    <script src="../js/app.js"></script>
+</body>
+</html>
